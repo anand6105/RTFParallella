@@ -33,7 +33,7 @@ int main(void) {
 	//initialize output buffer for debug messages
 	//outbuf_init();
 #ifdef RFTP_GENERATE_BTF_TRACE
-    //btf_trace_buf_init();
+    btf_trace_buf_init();
 #endif
 	//shared_labels_init();
 	//init_mem_sections();

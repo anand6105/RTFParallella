@@ -21,14 +21,15 @@ unsigned int *outbuf[10];
 #endif
 
 #ifdef RFTP_GENERATE_BTF_TRACE
-volatile unsigned int *ptick_count = (void *)0x3200;
-volatile unsigned int *psource_id = (void *)0x3204;
-volatile unsigned int *psource_instance = (void *)0x3208;
-volatile unsigned int *ptarget_id = (void *)0x320C;
-volatile unsigned int *ptarget_instance = (void *)0x3210;
-volatile unsigned int *pevent_id = (void *)0x3214;
-volatile unsigned int *ptype_id = (void *)0x3218;
-volatile unsigned int *psig_data = (void *)0x3220;
+#if 0
+unsigned int *ptick_count = (void *)0x4000;
+unsigned int *psource_id = (void *)0x4004;
+unsigned int *psource_instance = (void *)0x4008;
+unsigned int *ptype_id = (void *)0x400C;
+unsigned int *ptarget_id = (void *)0x4010;
+unsigned int *ptarget_instance = (void *)0x4014;
+unsigned int *pevent_id = (void *)0x4018;
+unsigned int *psig_data = (void *)0x4020;
 
 static unsigned int source_id;
 static unsigned int source_instance;
@@ -37,6 +38,12 @@ static unsigned int target_instance;
 static unsigned int event_id;
 static unsigned int type_id;
 static unsigned int sig_data;
+
+#endif
+
+static unsigned int *btf_trace_buf[BTF_TRACE_BUFFER_SIZE];
+
+
 
 #endif
 
@@ -59,7 +66,7 @@ void outbuf_init(void ){
 }
 
 
-#ifdef RFTP_GENERATE_BTF_TRACE_
+#ifdef RFTP_GENERATE_BTF_TRACE
 /**
  * Function to initialize the BTF trace buffer.
  *
@@ -102,7 +109,7 @@ void updateTick(void){
 #ifdef ENABLE_SHARED_LABEL
     *outbuf[TICK_FLAG] = xTaskGetTickCount();
 #endif
-    *ptick_count = xTaskGetTickCount();
+    *btf_trace_buf[TIME_FLAG] = xTaskGetTickCount();
 }
 
 void updateDebugFlag(int debugMessage){
@@ -116,6 +123,14 @@ void updateBTFTraceBuffer(int srcID, int srcInstance, btf_trace_event_type type,
         int targetId, int targetInstance, btf_trace_event_name event_name, int data)
 {
     //*btf_trace_buf[TIME_FLAG] = xTaskGetTickCount();
+    *btf_trace_buf[SOURCE_FLAG] = srcID;
+    *btf_trace_buf[SOURCE_INSTANCE_FLAG] = srcInstance;
+    *btf_trace_buf[EVENT_TYPE_FLAG] = type;
+    *btf_trace_buf[TARGET_FLAG] = targetId;
+    *btf_trace_buf[TARGET_INSTANCE_FLAG] = targetInstance;
+    *btf_trace_buf[EVENT_FLAG] = event_name;
+    *btf_trace_buf[DATA_FLAG] = data;
+#if 0
     source_id = srcID;
     source_instance = srcInstance;
     type_id = type;
@@ -123,11 +138,13 @@ void updateBTFTraceBuffer(int srcID, int srcInstance, btf_trace_event_type type,
     target_instance = targetInstance;
     event_id = event_name;
     sig_data = data;
+#endif
 }
 
 
 void write_to_btf_trace(void)
 {
+#if 0
     *psource_id = source_id;
     *psource_instance = source_instance;
     *ptype_id = type_id;
@@ -135,6 +152,6 @@ void write_to_btf_trace(void)
     *ptarget_instance = target_instance;
     *pevent_id = event_id;
     *psig_data = sig_data;
-
+#endif
 }
 #endif

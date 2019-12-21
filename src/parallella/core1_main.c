@@ -33,7 +33,7 @@ int main(void) {
 	//init_mem_sections();
 	//shared_labels_init_core();
 #ifdef RFTP_GENERATE_BTF_TRACE
-    //btf_trace_buf_init();
+    btf_trace_buf_init();
 #endif
 	//create Amalthea task objects
 #ifdef RFTP_GENERATE_BTF_TRACE

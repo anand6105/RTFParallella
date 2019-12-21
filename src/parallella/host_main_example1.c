@@ -109,15 +109,15 @@ int main(int argc, char *argv[])
     unsigned int message[9];
     unsigned int message2[9];
 #endif
-//#ifdef RFTP_GENERATE_BTF_TRACE
+#ifdef RFTP_GENERATE_BTF_TRACE
     unsigned int core0_btf_trace[BTF_TRACE_BUFFER_SIZE];
     unsigned int core1_btf_trace[BTF_TRACE_BUFFER_SIZE];
-//#endif
+#endif
     int loop;
     int addr;
-//#ifdef RFTP_GENERATE_BTF_TRACE
+#ifdef RFTP_GENERATE_BTF_TRACE
     int btf_trace_addr;
-//#endif
+#endif
     e_mem_t emem;
     e_init(NULL);
     /*

@@ -18,7 +18,7 @@
 
 #define cnt_address     0x3000
 //#ifdef RFTP_GENERATE_BTF_TRACE
-    #define btf_trace_address    0x3200
+    #define btf_trace_address    0x4000
 //#endif
 
 #define TASK1_FLAG             2
@@ -83,7 +83,7 @@ void updateBTFTraceBuffer(int srcID, int srcInstance, btf_trace_event_type type,
 
 void write_to_btf_trace(void);
 
-//void btf_trace_buf_init(void);
+void btf_trace_buf_init(void);
 #endif
 
 
