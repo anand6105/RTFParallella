@@ -18,7 +18,7 @@
 
 #define cnt_address     0x3000
 //#ifdef RFTP_GENERATE_BTF_TRACE
-    #define btf_trace_address    0x4000
+    #define btf_trace_address    0x3200
 //#endif
 
 #define TASK1_FLAG             2

@@ -1,0 +1,149 @@
+#version 1.0
+#creator
+#creationdate 2019-06-17 16:46:25Z
+#inputFile
+#timescale
+#entityType
+#-0 T
+#-2 R
+#-9 SIG
+#entityTable
+#-0 [idle]
+#-1 Task5ms0
+#-2 Task10ms0
+#-3 Task20ms0
+#-4 Task10ms1
+#-5 Task20ms1
+#-6 cIn5ms
+#-7 handler5ms
+#-8 cOut5ms
+#-9 cIn10ms
+#-10 handler10ms
+#-11 cOut10ms
+#-12 cIn20ms
+#-13 handler20ms
+#-14 cOut20ms
+#-15 cIn10msCore2
+#-16 handler10msCore2
+#-17 cOut10msCore2
+#-18 cIn20msCore2
+#-19 handler20msCore2
+#-20 cOut20msCore2
+#-21 sh_label_a
+#-22 sh_label_b
+#-23 DSH_labelA
+#-24 DSH_labelB
+#-25 Core_1
+#-26 Core_2
+#entityTypeTable
+#-T [idle]
+#-T Task5ms0
+#-T Task10ms0
+#-T Task20ms0
+#-T Task10ms1
+#-T Task20ms1
+#-R cIn5ms
+#-R handler5ms
+#-R cOut5ms
+#-R cIn10ms
+#-R handler10ms
+#-R cOut10ms
+#-R cIn20ms
+#-R handler20ms
+#-R cOut20ms
+#-R cIn10msCore2
+#-R handler10msCore2
+#-R cOut10msCore2
+#-R cIn20msCore2
+#-R handler20msCore2
+#-R cOut20msCore2
+#-SIG sh_label_a
+#-SIG sh_label_b
+#-SIG DSH_labelA
+#-SIG DSH_labelB
+#-C Core_1
+#-C Core_2
+BTF trace Core 0---[Ticks=0][SourceId=0][SourceIns=0][Type=0]                   [Target=0][TargetIns=0][Event=0][Data=0]
+BTF trace Core 1---[Ticks=0][SourceId=0][SourceIns=0][Type=0]                   [Target=0][TargetIns=0][Event=0][Data=0]
+BTF trace Core 0---[Ticks=0][SourceId=1][SourceIns=0][Type=2]                   [Target=7][TargetIns=0][Event=0][Data=0]
+BTF trace Core 1---[Ticks=0][SourceId=4][SourceIns=0][Type=2]                   [Target=16][TargetIns=0][Event=0][Data=0]
+BTF trace Core 0---[Ticks=1][SourceId=2][SourceIns=0][Type=2]                   [Target=10][TargetIns=0][Event=0][Data=0]
+BTF trace Core 1---[Ticks=1][SourceId=4][SourceIns=0][Type=2]                   [Target=16][TargetIns=0][Event=0][Data=0]
+BTF trace Core 0---[Ticks=2][SourceId=2][SourceIns=0][Type=2]                   [Target=10][TargetIns=0][Event=0][Data=0]
+BTF trace Core 1---[Ticks=2][SourceId=5][SourceIns=0][Type=2]                   [Target=19][TargetIns=0][Event=0][Data=0]
+BTF trace Core 0---[Ticks=3][SourceId=2][SourceIns=0][Type=2]                   [Target=10][TargetIns=0][Event=0][Data=0]
+BTF trace Core 1---[Ticks=3][SourceId=5][SourceIns=0][Type=2]                   [Target=19][TargetIns=0][Event=0][Data=0]
+BTF trace Core 0---[Ticks=4][SourceId=1][SourceIns=0][Type=2]                   [Target=7][TargetIns=1][Event=0][Data=0]
+BTF trace Core 1---[Ticks=4][SourceId=5][SourceIns=0][Type=2]                   [Target=19][TargetIns=0][Event=0][Data=0]
+BTF trace Core 0---[Ticks=5][SourceId=1][SourceIns=0][Type=2]                   [Target=7][TargetIns=1][Event=0][Data=0]
+BTF trace Core 1---[Ticks=5][SourceId=5][SourceIns=0][Type=2]                   [Target=19][TargetIns=0][Event=0][Data=0]
+BTF trace Core 0---[Ticks=5][SourceId=1][SourceIns=0][Type=2]                   [Target=7][TargetIns=1][Event=0][Data=0]
+BTF trace Core 1---[Ticks=5][SourceId=5][SourceIns=0][Type=2]                   [Target=19][TargetIns=0][Event=0][Data=0]
+BTF trace Core 0---[Ticks=6][SourceId=3][SourceIns=0][Type=2]                   [Target=13][TargetIns=0][Event=0][Data=0]
+BTF trace Core 1---[Ticks=6][SourceId=5][SourceIns=0][Type=2]                   [Target=19][TargetIns=0][Event=0][Data=0]
+BTF trace Core 0---[Ticks=7][SourceId=3][SourceIns=0][Type=2]                   [Target=13][TargetIns=0][Event=0][Data=0]
+BTF trace Core 1---[Ticks=7][SourceId=5][SourceIns=0][Type=2]                   [Target=19][TargetIns=0][Event=0][Data=0]
+BTF trace Core 0---[Ticks=8][SourceId=3][SourceIns=0][Type=2]                   [Target=13][TargetIns=0][Event=0][Data=0]
+BTF trace Core 1---[Ticks=8][SourceId=5][SourceIns=0][Type=2]                   [Target=19][TargetIns=0][Event=0][Data=0]
+BTF trace Core 0---[Ticks=9][SourceId=1][SourceIns=0][Type=2]                   [Target=7][TargetIns=2][Event=0][Data=0]
+BTF trace Core 1---[Ticks=9][SourceId=4][SourceIns=1][Type=2]                   [Target=16][TargetIns=1][Event=0][Data=0]
+BTF trace Core 0---[Ticks=10][SourceId=1][SourceIns=0][Type=2]                  [Target=7][TargetIns=2][Event=0][Data=0]
+BTF trace Core 1---[Ticks=10][SourceId=4][SourceIns=1][Type=2]                  [Target=16][TargetIns=1][Event=0][Data=0]
+BTF trace Core 0---[Ticks=11][SourceId=2][SourceIns=0][Type=2]                  [Target=10][TargetIns=1][Event=0][Data=0]
+BTF trace Core 1---[Ticks=11][SourceId=4][SourceIns=1][Type=2]                  [Target=16][TargetIns=1][Event=0][Data=0]
+BTF trace Core 0---[Ticks=12][SourceId=2][SourceIns=0][Type=2]                  [Target=10][TargetIns=1][Event=0][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=13][SourceId=2][SourceIns=0][Type=2]                  [Target=10][TargetIns=1][Event=0][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=14][SourceId=1][SourceIns=0][Type=2]                  [Target=7][TargetIns=3][Event=0][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=15][SourceId=1][SourceIns=0][Type=2]                  [Target=7][TargetIns=3][Event=0][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=16][SourceId=25][SourceIns=0][Type=0]                         [Target=2][TargetIns=1][Event=1][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=17][SourceId=25][SourceIns=0][Type=0]                         [Target=2][TargetIns=1][Event=1][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=18][SourceId=25][SourceIns=0][Type=0]                         [Target=3][TargetIns=0][Event=1][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=19][SourceId=1][SourceIns=0][Type=2]                  [Target=7][TargetIns=4][Event=0][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=20][SourceId=1][SourceIns=0][Type=2]                  [Target=7][TargetIns=4][Event=0][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=21][SourceId=2][SourceIns=0][Type=2]                  [Target=10][TargetIns=2][Event=0][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=22][SourceId=2][SourceIns=0][Type=2]                  [Target=10][TargetIns=2][Event=0][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=23][SourceId=2][SourceIns=0][Type=2]                  [Target=10][TargetIns=2][Event=0][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=24][SourceId=1][SourceIns=0][Type=2]                  [Target=7][TargetIns=5][Event=0][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=25][SourceId=1][SourceIns=0][Type=2]                  [Target=7][TargetIns=5][Event=0][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=26][SourceId=3][SourceIns=0][Type=2]                  [Target=13][TargetIns=1][Event=0][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=27][SourceId=3][SourceIns=0][Type=2]                  [Target=13][TargetIns=1][Event=0][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=28][SourceId=3][SourceIns=0][Type=2]                  [Target=13][TargetIns=1][Event=0][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=29][SourceId=1][SourceIns=0][Type=2]                  [Target=7][TargetIns=6][Event=0][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=30][SourceId=1][SourceIns=0][Type=2]                  [Target=7][TargetIns=6][Event=0][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=31][SourceId=2][SourceIns=0][Type=2]                  [Target=10][TargetIns=3][Event=0][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=32][SourceId=2][SourceIns=0][Type=2]                  [Target=10][TargetIns=3][Event=0][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=33][SourceId=2][SourceIns=0][Type=2]                  [Target=10][TargetIns=3][Event=0][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=34][SourceId=1][SourceIns=0][Type=2]                  [Target=7][TargetIns=7][Event=0][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=35][SourceId=1][SourceIns=0][Type=2]                  [Target=7][TargetIns=7][Event=0][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=36][SourceId=25][SourceIns=0][Type=0]                         [Target=2][TargetIns=3][Event=1][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=37][SourceId=25][SourceIns=0][Type=0]                         [Target=2][TargetIns=3][Event=1][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+BTF trace Core 0---[Ticks=38][SourceId=25][SourceIns=0][Type=0]                         [Target=3][TargetIns=1][Event=1][Data=0]
+BTF trace Core 1---[Ticks=12][SourceId=26][SourceIns=0][Type=0]                         [Target=5][TargetIns=0][Event=1][Data=0]
+----------------------------------------------
+RFTP demo complete

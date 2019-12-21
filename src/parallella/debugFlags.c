@@ -41,7 +41,7 @@ static unsigned int sig_data;
 
 #endif
 
-static unsigned int *btf_trace_buf[BTF_TRACE_BUFFER_SIZE];
+unsigned int *btf_trace_buf[BTF_TRACE_BUFFER_SIZE];
 
 
 
@@ -79,6 +79,13 @@ void btf_trace_buf_init(void)
 {
     int index;
     btf_trace_buf[0] = (unsigned int *) btf_trace_address;
+    btf_trace_buf[1] = btf_trace_buf[0] + 1;
+    btf_trace_buf[2] = btf_trace_buf[1] + 1;
+    btf_trace_buf[3] = btf_trace_buf[2] + 1;
+    btf_trace_buf[4] = btf_trace_buf[3] + 1;
+    btf_trace_buf[5] = btf_trace_buf[4] + 1;
+    btf_trace_buf[6] = btf_trace_buf[5] + 1;
+    btf_trace_buf[7] = btf_trace_buf[6] + 1;
     //initialize buffer
     for (index = 0;index < BTF_TRACE_BUFFER_SIZE; index++){
         *btf_trace_buf[index] = 0x00;
