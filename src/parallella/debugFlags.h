@@ -30,6 +30,8 @@
 #define DEBUG_FLAG             7
 #define TICK_FLAG              8
 
+//#define ENABLE_SHARED_LABEL    0x01
+
 
 /**
  * initialize output buffer in core memory
@@ -75,10 +77,14 @@ void updateTick(void);
  */
 void updateDebugFlag(int debugMessage);
 
-//#ifdef RFTP_GENERATE_BTF_TRACE
+#ifdef RFTP_GENERATE_BTF_TRACE
 void updateBTFTraceBuffer(int srcID, int srcInstance, btf_trace_event_type type,
         int targetId, int targetInstance, btf_trace_event_name event_name, int data);
-//#endif
+
+void write_to_btf_trace(void);
+
+//void btf_trace_buf_init(void);
+#endif
 
 
 #endif /* SRC_PARALLELLA_DEBUGFLAGS_H_ */

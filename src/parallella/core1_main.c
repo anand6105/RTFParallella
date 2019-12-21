@@ -29,9 +29,12 @@
 //---------------------------------------------
 int main(void) {
 	//initialize output buffer for debug messages
-	outbuf_init();
-	init_mem_sections();
-	shared_labels_init_core();
+	//outbuf_init();
+	//init_mem_sections();
+	//shared_labels_init_core();
+#ifdef RFTP_GENERATE_BTF_TRACE
+    //btf_trace_buf_init();
+#endif
 	//create Amalthea task objects
 #ifdef RFTP_GENERATE_BTF_TRACE
 	AmaltheaTask t20ms = createAmaltheaTask(handler10msCore2,cIn10msCore2,cOut10msCore2,10,26, 0, 4, 0,10,7);

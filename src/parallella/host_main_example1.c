@@ -24,10 +24,13 @@
 #include "host_utils.h"
 #include "model_enumerations.h"
 
+#ifdef ENABLE_SHARED_LABEL
+
 unsigned int shared_label_to_read[10];
 unsigned int shared_label_core_00[dstr_mem_sec_1_label_count];
 unsigned int shared_label_core_10[dstr_mem_sec_1_label_count];
 unsigned int shared_label_core[core_count][dstr_mem_sec_1_label_count];
+#endif
 
 //#ifdef RFTP_GENERATE_BTF_TRACE
 
@@ -49,10 +52,13 @@ static void construct_btf_trace_header(FILE *stream)
 
 int main(int argc, char *argv[])
 {
+#ifdef ENABLE_SHARED_LABEL
     int label_enable_count_core0 = 0;
     unsigned labelVisual_perCore[core_count][DSHM_visible_label_count];
     unsigned int prv_val_preCore[core_count][DSHM_visible_label_count];
-//#ifdef RFTP_GENERATE_BTF_TRACE
+#endif
+
+#ifdef RFTP_GENERATE_BTF_TRACE
     FILE *fp_to_trace = NULL;
     parse_btf_trace_arguments(argc, argv);
     uint8_t trace_file_path[512] = {0};
@@ -67,7 +73,9 @@ int main(int argc, char *argv[])
         fp_to_trace = stderr;
     }
     construct_btf_trace_header(fp_to_trace);
-//#endif/* End of RFTP_GENERATE_BTF_TRACE*/
+#endif/* End of RFTP_GENERATE_BTF_TRACE*/
+
+#ifdef ENABLE_SHARED_LABEL
     for (int i=0;i<core_count;i++){
         get_visible_label_index(labelVisual_perCore[i],MEM_TYPE_DSHM);
     }
@@ -90,14 +98,17 @@ int main(int argc, char *argv[])
     print_legend_enum(SHM_visible_label_count,labelVisual_SHM,MEM_TYPE_SHM);
     fprintf(stderr,"\n");
     fprintf(stderr,"===========================================================================\n");
+#endif
     //counters for row and column, cored id and loop counter
     unsigned   row_loop,col_loop;
     // this will contain the epiphany platform configuration
     e_platform_t epiphany;
     e_epiphany_t dev;
     e_return_stat_t result;
+#ifdef ENABLE_SHARED_LABEL
     unsigned int message[9];
     unsigned int message2[9];
+#endif
 //#ifdef RFTP_GENERATE_BTF_TRACE
     unsigned int core0_btf_trace[BTF_TRACE_BUFFER_SIZE];
     unsigned int core1_btf_trace[BTF_TRACE_BUFFER_SIZE];
@@ -116,7 +127,9 @@ int main(int argc, char *argv[])
      * and ends at 0x3FFF_FFFF
      *
      */
+#ifdef ENABLE_SHARED_LABEL
     e_alloc(&emem, shared_mem_section , sizeof(shared_label_to_read));
+#endif
     e_reset_system(); // reset the epiphnay chip
     e_get_platform_info(&epiphany);//gets the configuration info for the parallella platofrm
     //debug flag
@@ -135,10 +148,11 @@ int main(int argc, char *argv[])
     }
     e_start_group(&dev);
     addr = cnt_address;
-//#ifdef RFTP_GENERATE_BTF_TRACE
+#ifdef RFTP_GENERATE_BTF_TRACE
     btf_trace_addr = btf_trace_address;
-//#endif
+#endif
     int pollLoopCounter = 0;
+#ifdef ENABLE_SHARED_LABEL
     unsigned int chainLatencyEndIndicator = 0;
     unsigned int chainLatencyStartIndicator = 10e6;
     unsigned int lat1 = 0;
@@ -146,24 +160,29 @@ int main(int argc, char *argv[])
     array_init(buffer1,label_str_len);
     char buffer2[label_str_len];
     array_init(buffer2,label_str_len);
+#endif
 
 
     //int prev1,prev2,prev3;
     for (pollLoopCounter=0;pollLoopCounter<=40;pollLoopCounter++){
+#ifdef ENABLE_SHARED_LABEL
         message[3] = 0;
         e_read(&dev,0,0,addr, &message, sizeof(message));
-//#ifdef RFTP_GENERATE_BTF_TRACE
+#endif
+#ifdef RFTP_GENERATE_BTF_TRACE
         e_read(&dev,0,0,btf_trace_addr, &core0_btf_trace, sizeof(core0_btf_trace));
-//#endif
+#endif
+#ifdef ENABLE_SHARED_LABEL
         e_read(&dev,0,0,dstr_mem_offset_sec_1, &shared_label_core[0], sizeof(shared_label_core_00));
         e_read(&dev,1,0,addr, &message2, sizeof(message2));
-//#ifdef RFTP_GENERATE_BTF_TRACE
+#endif
+#ifdef RFTP_GENERATE_BTF_TRACE
         e_read(&dev,1,0,btf_trace_addr, &core1_btf_trace, sizeof(core1_btf_trace));
-//#endif
+#endif
+#ifdef ENABLE_SHARED_LABEL
         e_read(&dev,1,0,dstr_mem_offset_sec_1, &shared_label_core[1], sizeof(shared_label_core_10));
         e_read(&emem,0,0,0x00, &shared_label_to_read, sizeof(unsigned int));
-//#ifdef RFTP_GENERATE_BTF_TRACE
-//#endif /* End of RFTP_GENERATE_BTF_TRACE */
+
         if (message[8]!= message2[8] ){
             //fprintf(stderr,"NIS->");
         }
@@ -179,6 +198,7 @@ int main(int argc, char *argv[])
 
         //user_config_print_values_auto(SHM_visible_label_count,labelVisual_SHM,shared_label_to_read,prv_val_SHM);
         fprintf(stderr,"\n");
+#endif
         fprintf(stderr, "BTF trace Core 0---[Ticks=%d][SourceId=%d][SourceIns=%d][Type=%d] \
         		[Target=%d][TargetIns=%d][Event=%d][Data=%d]\n", core0_btf_trace[0],
         		core0_btf_trace[1], core0_btf_trace[2], core0_btf_trace[3], core0_btf_trace[4],

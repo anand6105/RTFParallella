@@ -43,6 +43,8 @@ AmaltheaTask createAmaltheaTask(void *taskHandler,void *cInHandler,void *cOutHan
     }
 }
 #endif
+
+
 unsigned int calculateStackSize(int labelBitCount, int labelCount){
     return ((labelBitCount*labelCount)/PLATFORM_WORD_LENGTH);
 }
