@@ -22,6 +22,15 @@ int core_write_mutex=0;
 void shared_labels_init_core(){
 	//shared buffer in core memory
 	outbuf_dstr_shared[0] = (dstr_mem_sec_1_label_type *) dstr_mem_offset_sec_1;
+	outbuf_dstr_shared[1] = outbuf_dstr_shared[0] + 1;
+    outbuf_dstr_shared[2] = outbuf_dstr_shared[1] + 1;
+    outbuf_dstr_shared[3] = outbuf_dstr_shared[2] + 1;
+    outbuf_dstr_shared[4] = outbuf_dstr_shared[3] + 1;
+    outbuf_dstr_shared[5] = outbuf_dstr_shared[4] + 1;
+    outbuf_dstr_shared[6] = outbuf_dstr_shared[5] + 1;
+    outbuf_dstr_shared[7] = outbuf_dstr_shared[6] + 1;
+    outbuf_dstr_shared[8] = outbuf_dstr_shared[7] + 1;
+    outbuf_dstr_shared[9] = outbuf_dstr_shared[8] + 1;
 	//initialize buffer
 	int i;
 	for (i=0;i<9;i++){

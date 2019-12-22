@@ -56,6 +56,15 @@ void outbuf_init(void ){
     //This will be the same on each core
     //debug interface in shared memory
     outbuf[0] = (unsigned int *) cnt_address;
+    outbuf[1] = outbuf[0] + 1;
+    outbuf[2] = outbuf[1] + 1;
+    outbuf[3] = outbuf[2] + 1;
+    outbuf[4] = outbuf[3] + 1;
+    outbuf[5] = outbuf[4] + 1;
+    outbuf[6] = outbuf[5] + 1;
+    outbuf[7] = outbuf[6] + 1;
+    outbuf[8] = outbuf[7] + 1;
+    outbuf[9] = outbuf[8] + 1;
     //initialize buffer
     int i;
     //timer1init();
@@ -116,7 +125,9 @@ void updateTick(void){
 #ifdef ENABLE_SHARED_LABEL
     *outbuf[TICK_FLAG] = xTaskGetTickCount();
 #endif
+#ifdef RFTP_GENERATE_BTF_TRACE 
     *btf_trace_buf[TIME_FLAG] = xTaskGetTickCount();
+#endif
 }
 
 void updateDebugFlag(int debugMessage){

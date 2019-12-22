@@ -18,7 +18,7 @@
 #include <stdint.h>
 
 
-#define shared_mem_section	0x01000000
+#define shared_mem_section	0x01001000
 
 #define shared_mem_section_2	0x01001000
 

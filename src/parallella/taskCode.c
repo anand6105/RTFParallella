@@ -34,10 +34,10 @@ void handler5ms(){
 #endif
     int localLabel;
     updateDebugFlag(700);
-//#ifdef RFTP_GENERATE_BTF_TRACE
+#ifdef RFTP_GENERATE_BTF_TRACE
     updateBTFTraceBuffer(1, 0, RUNNABLE_EVENT, 7,
     		passes1, PROCESS_START, 0);
-//#endif
+#endif
     sleepTimerMs(2,1);
 #ifdef RFTP_GENERATE_BTF_TRACE
     updateBTFTraceBuffer(srcId, srcInstance, RUNNABLE_EVENT, 7,
@@ -55,10 +55,10 @@ void handler10ms(int srcId, int srcInstance){
 void handler10ms(){
 #endif
 	updateDebugFlag(800);
-//#ifdef RFTP_GENERATE_BTF_TRACE
+#ifdef RFTP_GENERATE_BTF_TRACE
     updateBTFTraceBuffer(2, 0, RUNNABLE_EVENT, 10,
     		passes2, PROCESS_START, 0);
-//#endif
+#endif
     sleepTimerMs(3,2);
 #ifdef RFTP_GENERATE_BTF_TRACE
     updateBTFTraceBuffer(srcId, srcInstance, RUNNABLE_EVENT, 10,
@@ -75,10 +75,10 @@ void handler20ms(int srcId, int srcInstance){
 void handler20ms(){
 #endif
 	updateDebugFlag(899);
-//#ifdef RFTP_GENERATE_BTF_TRACE
+#ifdef RFTP_GENERATE_BTF_TRACE
     updateBTFTraceBuffer(3, 0, RUNNABLE_EVENT, 13,
     		passes3, PROCESS_START, 0);
-//#endif
+#endif
     sleepTimerMs(5,3);
 #ifdef RFTP_GENERATE_BTF_TRACE
     updateBTFTraceBuffer(srcId, srcInstance, RUNNABLE_EVENT, 13,

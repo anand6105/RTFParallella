@@ -30,14 +30,17 @@ unsigned int* global_shm_sec_ptr;
 
 //---------------------------------------------
 int main(void) {
-	//initialize output buffer for debug messages
-	//outbuf_init();
+
 #ifdef RFTP_GENERATE_BTF_TRACE
     btf_trace_buf_init();
 #endif
-	//shared_labels_init();
-	//init_mem_sections();
-	//shared_labels_init_core();
+#ifdef ENABLE_SHARED_LABEL
+	//initialize output buffer for debug messages
+	outbuf_init();
+	shared_labels_init();
+	init_mem_sections();
+	shared_labels_init_core();
+#endif	
 	//create Amalthea task objects
 #ifdef RFTP_GENERATE_BTF_TRACE
 	AmaltheaTask t5ms =  createAmaltheaTask(handler5ms,cIn5ms,cOut5ms,5,25, 0, 1, 0, 5,2);

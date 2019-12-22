@@ -151,11 +151,11 @@ void cOut5ms(){
 #endif
 	label5_10_00 = label5_10_00_copy1;
 	write_DSHM_section(sec1_core_10,0,shared_label_2);
-//#ifdef RFTP_GENERATE_BTF_TRACE
+#ifdef RFTP_GENERATE_BTF_TRACE
     updateBTFTraceBuffer(1, 0, RUNNABLE_EVENT, 8,
     		0, PROCESS_TERMINATE, 0);
-    //cOut5msInstance++;
-//#endif
+    cOut5msInstance++;
+#endif
 	//shared_label_write_core(1,0,0,shared_label_2);
 }
 
@@ -168,11 +168,11 @@ void cOut10ms(){
 #endif
 	write_shm_section(sec1_global_pointer,0,2);
 	//shared_label_write(0,2);
-//#ifdef RFTP_GENERATE_BTF_TRACE
+#ifdef RFTP_GENERATE_BTF_TRACE
     updateBTFTraceBuffer(2, 0, RUNNABLE_EVENT, 11,
     		0, PROCESS_TERMINATE, 0);
-    //cOut10msInstance++;
-//#endif
+    cOut10msInstance++;
+#endif
 }
 
 

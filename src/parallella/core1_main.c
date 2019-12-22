@@ -29,9 +29,11 @@
 //---------------------------------------------
 int main(void) {
 	//initialize output buffer for debug messages
-	//outbuf_init();
-	//init_mem_sections();
-	//shared_labels_init_core();
+#ifdef ENABLE_SHARED_LABEL
+	outbuf_init();
+	init_mem_sections();
+	shared_labels_init_core();
+#endif
 #ifdef RFTP_GENERATE_BTF_TRACE
     btf_trace_buf_init();
 #endif
