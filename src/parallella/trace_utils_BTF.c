@@ -13,8 +13,8 @@
 #include <getopt.h>
 #include <time.h>
 #include "trace_utils_BTF.h"
-
-
+#include <limits.h>
+#include <unistd.h>
 /*------------------------------DEFINES-------------------------*/
 #define BTF_TRACE_ENTITY_TABLE_SIZE                 64
 
@@ -107,9 +107,28 @@ static void print_usage(void)
 }
 
 
-void get_btf_trace_file_path(uint8_t *trace_file_path)
+void get_btf_trace_file_path(char *trace_file_path)
 {
 	//TODO: Get the file path from the current working directory
+   char lcwd[PATH_MAX-1];
+   char lcwd1[PATH_MAX];
+   if (getcwd(lcwd, sizeof(lcwd)) != NULL) {
+       fprintf(stderr,"Current working dir: %s\n", lcwd);
+   } else {
+       perror("getcwd() error");
+       return NULL;
+   }
+   if(0 != access(lcwd, W_OK))
+   {
+	   fprintf(stderr,"You don't have write access to the directory in which you are trying to create the btf file\n");
+   }
+   else
+   {
+	   fprintf(stderr,"Write access available for the current user\n");
+   }
+   sprintf(lcwd1,"%s" "%c" "%s",lcwd,'\\',output_trace_path);
+   trace_file_path = lcwd1;
+   fprintf(stderr,"trace_file_path = \n",trace_file_path);
 }
 
 /**

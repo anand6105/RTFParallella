@@ -87,7 +87,7 @@ typedef struct btf_trace_entity_table_t
 } btf_trace_entity_table;
 
 /* Function to get the trace file path from current working directory */
-void get_btf_trace_file_path(uint8_t *trace_file_path);
+void get_btf_trace_file_path(char *trace_file_path);
 
 /* Function to parse the command line arguments for generating the BTF trace file. */
 void parse_btf_trace_arguments(int argc, char **argv);
