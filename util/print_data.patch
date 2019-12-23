@@ -1,0 +1,262 @@
+diff --git a/src/parallella/debugFlags.c b/src/parallella/debugFlags.c
+index 97a9f22..d1ef3ed 100755
+--- a/src/parallella/debugFlags.c
++++ b/src/parallella/debugFlags.c
+@@ -140,6 +140,7 @@ void updateDebugFlag(int debugMessage){
+ void updateBTFTraceBuffer(int srcID, int srcInstance, btf_trace_event_type type,
+         int targetId, int targetInstance, btf_trace_event_name event_name, int data)
+ {
++#if 1
+     //*btf_trace_buf[TIME_FLAG] = xTaskGetTickCount();
+     *btf_trace_buf[SOURCE_FLAG] = srcID;
+     *btf_trace_buf[SOURCE_INSTANCE_FLAG] = srcInstance;
+@@ -148,7 +149,7 @@ void updateBTFTraceBuffer(int srcID, int srcInstance, btf_trace_event_type type,
+     *btf_trace_buf[TARGET_INSTANCE_FLAG] = targetInstance;
+     *btf_trace_buf[EVENT_FLAG] = event_name;
+     *btf_trace_buf[DATA_FLAG] = data;
+-#if 0
++#else
+     source_id = srcID;
+     source_instance = srcInstance;
+     type_id = type;
+diff --git a/src/parallella/host_main_example1.c b/src/parallella/host_main_example1.c
+index e7f032b..b518d13 100644
+--- a/src/parallella/host_main_example1.c
++++ b/src/parallella/host_main_example1.c
+@@ -32,7 +32,7 @@ unsigned int shared_label_core_10[dstr_mem_sec_1_label_count];
+ unsigned int shared_label_core[core_count][dstr_mem_sec_1_label_count];
+ #endif
+ 
+-//#ifdef RFTP_GENERATE_BTF_TRACE
++#ifdef RFTP_GENERATE_BTF_TRACE
+ 
+ static void construct_btf_trace_header(FILE *stream)
+ {
+@@ -48,7 +48,7 @@ static void construct_btf_trace_header(FILE *stream)
+     write_btf_trace_header_entity_type_table(stream);
+ }
+ 
+-//#endif
++#endif
+ 
+ int main(int argc, char *argv[])
+ {
+@@ -61,15 +61,19 @@ int main(int argc, char *argv[])
+ #ifdef RFTP_GENERATE_BTF_TRACE
+     FILE *fp_to_trace = NULL;
+     parse_btf_trace_arguments(argc, argv);
+-    uint8_t trace_file_path[512] = {0};
++    char trace_file_path[512] = {0};
+     get_btf_trace_file_path(trace_file_path);
+-    if (strlen(trace_file_path) != 0)
++    if (strlen((const char *)trace_file_path) != 0)
+     {
+-        //TODO: Add function to create file pointer for given file path.
++        fp_to_trace = fopen((const char *)trace_file_path, "w+");
++        if (fp_to_trace == NULL)
++        {
++            fp_to_trace = stderr;
++        }
+     }
+     else
+     {
+-    	fprintf(stderr,"Output redirected to stderr\n");
++        fprintf(stderr,"Output redirected to stderr\n");
+         fp_to_trace = stderr;
+     }
+     construct_btf_trace_header(fp_to_trace);
+@@ -170,14 +174,16 @@ int main(int argc, char *argv[])
+         e_read(&dev,0,0,addr, &message, sizeof(message));
+ #endif
+ #ifdef RFTP_GENERATE_BTF_TRACE
+-        e_read(&dev,0,0,btf_trace_addr, &core0_btf_trace, sizeof(core0_btf_trace));
++        e_read(&dev,0,0,btf_trace_addr, core0_btf_trace, sizeof(core0_btf_trace));
++        write_btf_trace_data(fp_to_trace, core0_btf_trace);
+ #endif
+ #ifdef ENABLE_SHARED_LABEL
+         e_read(&dev,0,0,dstr_mem_offset_sec_1, &shared_label_core[0], sizeof(shared_label_core_00));
+         e_read(&dev,1,0,addr, &message2, sizeof(message2));
+ #endif
+ #ifdef RFTP_GENERATE_BTF_TRACE
+-        e_read(&dev,1,0,btf_trace_addr, &core1_btf_trace, sizeof(core1_btf_trace));
++        e_read(&dev,1,0,btf_trace_addr, core1_btf_trace, sizeof(core1_btf_trace));
++        write_btf_trace_data(fp_to_trace, core1_btf_trace);
+ #endif
+ #ifdef ENABLE_SHARED_LABEL
+         e_read(&dev,1,0,dstr_mem_offset_sec_1, &shared_label_core[1], sizeof(shared_label_core_10));
+@@ -212,6 +218,11 @@ int main(int argc, char *argv[])
+         nsleep(1);
+     }
+     fprintf(stderr,"----------------------------------------------\n");
++    if (fp_to_trace != NULL)
++    {
++        fclose(fp_to_trace);
++        fp_to_trace = NULL;
++    }
+     e_close(&dev);
+     e_finalize();
+     //----------------------------------------------------------------------------
+diff --git a/src/parallella/model_enumerations.c b/src/parallella/model_enumerations.c
+index 78d6b5e..5300fc3 100644
+--- a/src/parallella/model_enumerations.c
++++ b/src/parallella/model_enumerations.c
+@@ -118,7 +118,7 @@ void get_visible_label_index(unsigned array[],unsigned mem_type){
+     }
+ }
+ 
+-//#ifdef RFTP_GENERATE_BTF_TRACE
++#ifdef RFTP_GENERATE_BTF_TRACE
+ 
+ void generate_task_entity_table(void)
+ {
+@@ -163,7 +163,7 @@ void generate_hw_entity_table(void)
+     store_entity_entry(26, CORE_EVENT, (uint8_t *)hw_enum[1]);
+ }
+ 
+-//#endif /* End of RFTP_GENERATE_BTF_TRACE */
++#endif /* End of RFTP_GENERATE_BTF_TRACE */
+ 
+ 
+ 
+diff --git a/src/parallella/trace_utils_BTF.c b/src/parallella/trace_utils_BTF.c
+index 478ca57..9fe76a5 100644
+--- a/src/parallella/trace_utils_BTF.c
++++ b/src/parallella/trace_utils_BTF.c
+@@ -82,6 +82,22 @@ static int16_t find_first_free_index(void)
+     return -1;
+ }
+ 
++/* Function to get the entity name based on the id passed */
++static unsigned char * get_entity_name(unsigned int id)
++{
++    int index = 0;
++    for(index = 0; index < BTF_TRACE_ENTITY_TABLE_SIZE; index++)
++    {
++        if (entity_table[index].is_occupied == 0x01)
++        {
++            if (id == entity_table[index].entity_data.entity_id)
++            {
++                return entity_table[index].entity_data.entity_name;
++            }
++        }
++    }
++    return NULL;
++}
+ 
+ /* Function to get the current time of creation of btf trace file */
+ static void get_trace_timestamp(uint8_t *buffer)
+@@ -91,7 +107,7 @@ static void get_trace_timestamp(uint8_t *buffer)
+     time(&timer);
+     tm_info = localtime(&timer);
+     /* The total number of characters to display time is 26 */
+-    strftime(buffer, 26, "%Y-%m-%d %H:%M:%SZ", tm_info);
++    strftime((char *)buffer, 26, "%Y-%m-%d %H:%M:%S", tm_info);
+ }
+ 
+ /* Function to display to usage of the command line parameters */
+@@ -106,29 +122,36 @@ static void print_usage(void)
+     fflush(stdout);
+ }
+ 
+-
++/* Function to get the file name of the trace file along with the
++ * absoulte path.
++ *
++ * Arguments:
++ * @out_param trace_file_path  : Pointer to the buffer where the BTF trace file path
++ *                                  is stored.
++ *
++ * Return: void
++ */
+ void get_btf_trace_file_path(char *trace_file_path)
+ {
+-	//TODO: Get the file path from the current working directory
+-   char lcwd[PATH_MAX-1];
+-   char lcwd1[PATH_MAX];
+-   if (getcwd(lcwd, sizeof(lcwd)) != NULL) {
+-       fprintf(stderr,"Current working dir: %s\n", lcwd);
+-   } else {
+-       perror("getcwd() error");
+-       return NULL;
+-   }
+-   if(0 != access(lcwd, W_OK))
+-   {
+-	   fprintf(stderr,"You don't have write access to the directory in which you are trying to create the btf file\n");
+-   }
+-   else
+-   {
+-	   fprintf(stderr,"Write access available for the current user\n");
+-   }
+-   sprintf(lcwd1,"%s" "%c" "%s",lcwd,'\\',output_trace_path);
+-   trace_file_path = lcwd1;
+-   fprintf(stderr,"trace_file_path = \n",trace_file_path);
++    if (trace_file_path == NULL)
++    {
++        return;
++    }
++    char lcwd[PATH_MAX-1];
++
++    if (getcwd(lcwd, sizeof(lcwd)) != NULL) {
++        fprintf(stderr,"Current working dir: %s\n", lcwd);
++    } else {
++        perror("getcwd() error");
++        return;
++    }
++    if(0 != access(lcwd, W_OK))
++    {
++        fprintf(stderr,"You don't have write access to the directory in which you are trying to create the btf file\n");
++    }
++    sprintf(trace_file_path,"%s" "%c" "%s",lcwd,'\\',output_trace_path);
++    fprintf(stderr,"trace_file_path = %s\n",trace_file_path);
++    fflush(stderr);
+ }
+ 
+ /**
+@@ -337,3 +360,35 @@ void write_btf_trace_header_entity_table(FILE *stream)
+         }
+     }
+ }
++
++/**
++ * Function to write the data section of the BTF
++ *
++ * Arguments:
++ * @in_param stream        : File pointer to the stream where the data has to be
++ *                            written.
++ * @in_param data_buffer   : Data buffer containing the BTF trace information.
++ *
++ * Return: void
++ */
++void write_btf_trace_data(FILE *stream, unsigned int * data_buffer)
++{
++    if (stream == NULL || (data_buffer == NULL))
++    {
++        return;
++    }
++    unsigned int ticks = data_buffer[TIME_FLAG];
++    unsigned char * source_name = get_entity_name(data_buffer[SOURCE_FLAG]);
++    unsigned char * target_name = get_entity_name(data_buffer[TARGET_FLAG]);
++    const unsigned char *event_type_string = event_type[data_buffer[EVENT_TYPE_FLAG]];
++    const unsigned char *event_name_string = event_name[data_buffer[EVENT_FLAG]];
++    unsigned int data = data_buffer[DATA_FLAG];
++
++    if ((source_name != NULL) && (target_name != NULL))
++    {
++        fprintf(stream,"%d, %12s, %6d, %12s, %12s, %6d, %12s, %6d\n", ticks, source_name, data_buffer[SOURCE_INSTANCE_FLAG],
++                 event_type_string, target_name, data_buffer[TARGET_INSTANCE_FLAG], event_name_string, data);
++    }
++
++
++}
+diff --git a/src/parallella/trace_utils_BTF.h b/src/parallella/trace_utils_BTF.h
+index ca39378..7e09172 100644
+--- a/src/parallella/trace_utils_BTF.h
++++ b/src/parallella/trace_utils_BTF.h
+@@ -107,4 +107,7 @@ void write_btf_trace_header_entity_type_table(FILE *stream);
+ /* Function to store the entry for all the entities */
+ void store_entity_entry(uint16_t typeId, btf_trace_event_type type, uint8_t *name);
+ 
++/* Function to write the data section of the BTF */
++void write_btf_trace_data(FILE *stream, unsigned int * data_buffer);
++
+ #endif /* SRC_PARALLELLA_TRACE_UTILS_BTF_H_ */
