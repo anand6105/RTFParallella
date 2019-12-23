@@ -118,7 +118,7 @@ void get_visible_label_index(unsigned array[],unsigned mem_type){
     }
 }
 
-//#ifdef RFTP_GENERATE_BTF_TRACE
+#ifdef RFTP_GENERATE_BTF_TRACE
 
 void generate_task_entity_table(void)
 {
@@ -163,7 +163,7 @@ void generate_hw_entity_table(void)
     store_entity_entry(26, CORE_EVENT, (uint8_t *)hw_enum[1]);
 }
 
-//#endif /* End of RFTP_GENERATE_BTF_TRACE */
+#endif /* End of RFTP_GENERATE_BTF_TRACE */
 
 
 

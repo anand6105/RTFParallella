@@ -140,6 +140,7 @@ void updateDebugFlag(int debugMessage){
 void updateBTFTraceBuffer(int srcID, int srcInstance, btf_trace_event_type type,
         int targetId, int targetInstance, btf_trace_event_name event_name, int data)
 {
+#if 1
     //*btf_trace_buf[TIME_FLAG] = xTaskGetTickCount();
     *btf_trace_buf[SOURCE_FLAG] = srcID;
     *btf_trace_buf[SOURCE_INSTANCE_FLAG] = srcInstance;
@@ -148,7 +149,7 @@ void updateBTFTraceBuffer(int srcID, int srcInstance, btf_trace_event_type type,
     *btf_trace_buf[TARGET_INSTANCE_FLAG] = targetInstance;
     *btf_trace_buf[EVENT_FLAG] = event_name;
     *btf_trace_buf[DATA_FLAG] = data;
-#if 0
+#else
     source_id = srcID;
     source_instance = srcInstance;
     type_id = type;

@@ -32,7 +32,7 @@ unsigned int shared_label_core_10[dstr_mem_sec_1_label_count];
 unsigned int shared_label_core[core_count][dstr_mem_sec_1_label_count];
 #endif
 
-//#ifdef RFTP_GENERATE_BTF_TRACE
+#ifdef RFTP_GENERATE_BTF_TRACE
 
 static void construct_btf_trace_header(FILE *stream)
 {
@@ -48,7 +48,7 @@ static void construct_btf_trace_header(FILE *stream)
     write_btf_trace_header_entity_type_table(stream);
 }
 
-//#endif
+#endif
 
 int main(int argc, char *argv[])
 {
@@ -61,15 +61,19 @@ int main(int argc, char *argv[])
 #ifdef RFTP_GENERATE_BTF_TRACE
     FILE *fp_to_trace = NULL;
     parse_btf_trace_arguments(argc, argv);
-    uint8_t trace_file_path[512] = {0};
+    char trace_file_path[512] = {0};
     get_btf_trace_file_path(trace_file_path);
-    if (strlen(trace_file_path) != 0)
+    if (strlen((const char *)trace_file_path) != 0)
     {
-        //TODO: Add function to create file pointer for given file path.
+        fp_to_trace = fopen((const char *)trace_file_path, "w+");
+        if (fp_to_trace == NULL)
+        {
+            fp_to_trace = stderr;
+        }
     }
     else
     {
-    	fprintf(stderr,"Output redirected to stderr\n");
+        fprintf(stderr,"Output redirected to stderr\n");
         fp_to_trace = stderr;
     }
     construct_btf_trace_header(fp_to_trace);
@@ -170,14 +174,16 @@ int main(int argc, char *argv[])
         e_read(&dev,0,0,addr, &message, sizeof(message));
 #endif
 #ifdef RFTP_GENERATE_BTF_TRACE
-        e_read(&dev,0,0,btf_trace_addr, &core0_btf_trace, sizeof(core0_btf_trace));
+        e_read(&dev,0,0,btf_trace_addr, core0_btf_trace, sizeof(core0_btf_trace));
+        write_btf_trace_data(fp_to_trace, core0_btf_trace);
 #endif
 #ifdef ENABLE_SHARED_LABEL
         e_read(&dev,0,0,dstr_mem_offset_sec_1, &shared_label_core[0], sizeof(shared_label_core_00));
         e_read(&dev,1,0,addr, &message2, sizeof(message2));
 #endif
 #ifdef RFTP_GENERATE_BTF_TRACE
-        e_read(&dev,1,0,btf_trace_addr, &core1_btf_trace, sizeof(core1_btf_trace));
+        e_read(&dev,1,0,btf_trace_addr, core1_btf_trace, sizeof(core1_btf_trace));
+        write_btf_trace_data(fp_to_trace, core1_btf_trace);
 #endif
 #ifdef ENABLE_SHARED_LABEL
         e_read(&dev,1,0,dstr_mem_offset_sec_1, &shared_label_core[1], sizeof(shared_label_core_10));
@@ -212,6 +218,11 @@ int main(int argc, char *argv[])
         nsleep(1);
     }
     fprintf(stderr,"----------------------------------------------\n");
+    if (fp_to_trace != NULL)
+    {
+        fclose(fp_to_trace);
+        fp_to_trace = NULL;
+    }
     e_close(&dev);
     e_finalize();
     //----------------------------------------------------------------------------

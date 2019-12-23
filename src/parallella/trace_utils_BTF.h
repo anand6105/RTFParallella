@@ -107,4 +107,7 @@ void write_btf_trace_header_entity_type_table(FILE *stream);
 /* Function to store the entry for all the entities */
 void store_entity_entry(uint16_t typeId, btf_trace_event_type type, uint8_t *name);
 
+/* Function to write the data section of the BTF */
+void write_btf_trace_data(FILE *stream, unsigned int * data_buffer);
+
 #endif /* SRC_PARALLELLA_TRACE_UTILS_BTF_H_ */

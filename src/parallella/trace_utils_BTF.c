@@ -57,16 +57,9 @@ const uint8_t event_name[][16] = {
 /*-------------------------STATIC FUNCTIONS----------------------------*/
 static void print_usage(void);
 static void get_trace_timestamp(uint8_t *buffer);
-static int validate_timescale(char *scale);
 static int16_t find_first_free_index(void);
 static void get_trace_timestamp(uint8_t *buffer);
 
-
-
-static int validate_timescale(char *scale)
-{
-    return BTF_TRACE_TRUE;
-}
 
 /* Function to get the first free available index */
 static int16_t find_first_free_index(void)
@@ -82,6 +75,22 @@ static int16_t find_first_free_index(void)
     return -1;
 }
 
+/* Function to get the entity name based on the id passed */
+static unsigned char * get_entity_name(unsigned int id)
+{
+    int index = 0;
+    for(index = 0; index < BTF_TRACE_ENTITY_TABLE_SIZE; index++)
+    {
+        if (entity_table[index].is_occupied == 0x01)
+        {
+            if (id == entity_table[index].entity_data.entity_id)
+            {
+                return entity_table[index].entity_data.entity_name;
+            }
+        }
+    }
+    return NULL;
+}
 
 /* Function to get the current time of creation of btf trace file */
 static void get_trace_timestamp(uint8_t *buffer)
@@ -91,7 +100,7 @@ static void get_trace_timestamp(uint8_t *buffer)
     time(&timer);
     tm_info = localtime(&timer);
     /* The total number of characters to display time is 26 */
-    strftime(buffer, 26, "%Y-%m-%d %H:%M:%SZ", tm_info);
+    strftime((char *)buffer, 26, "%Y-%m-%d %H:%M:%S", tm_info);
 }
 
 /* Function to display to usage of the command line parameters */
@@ -106,29 +115,36 @@ static void print_usage(void)
     fflush(stdout);
 }
 
-
+/* Function to get the file name of the trace file along with the
+ * absoulte path.
+ *
+ * Arguments:
+ * @out_param trace_file_path  : Pointer to the buffer where the BTF trace file path
+ *                                  is stored.
+ *
+ * Return: void
+ */
 void get_btf_trace_file_path(char *trace_file_path)
 {
-	//TODO: Get the file path from the current working directory
-   char lcwd[PATH_MAX-1];
-   char lcwd1[PATH_MAX];
-   if (getcwd(lcwd, sizeof(lcwd)) != NULL) {
-       fprintf(stderr,"Current working dir: %s\n", lcwd);
-   } else {
-       perror("getcwd() error");
-       return NULL;
-   }
-   if(0 != access(lcwd, W_OK))
-   {
-	   fprintf(stderr,"You don't have write access to the directory in which you are trying to create the btf file\n");
-   }
-   else
-   {
-	   fprintf(stderr,"Write access available for the current user\n");
-   }
-   sprintf(lcwd1,"%s" "%c" "%s",lcwd,'\\',output_trace_path);
-   trace_file_path = lcwd1;
-   fprintf(stderr,"trace_file_path = \n",trace_file_path);
+    if (trace_file_path == NULL)
+    {
+        return;
+    }
+    char lcwd[PATH_MAX-1];
+
+    if (getcwd(lcwd, sizeof(lcwd)) != NULL) {
+        fprintf(stderr,"Current working dir: %s\n", lcwd);
+    } else {
+        perror("getcwd() error");
+        return;
+    }
+    if(0 != access(lcwd, W_OK))
+    {
+        fprintf(stderr,"You don't have write access to the directory in which you are trying to create the btf file\n");
+    }
+    sprintf(trace_file_path,"%s" "%c" "%s",lcwd,'/',output_trace_path);
+    fprintf(stderr,"trace_file_path = %s\n",trace_file_path);
+    fflush(stderr);
 }
 
 /**
@@ -170,13 +186,6 @@ void  parse_btf_trace_arguments(int argc, char **argv)
                  break;
              case 's' :
                  strncpy((char *)btf_header.timescale, (const char *)optarg, sizeof(btf_header.timescale));
-                 int retval = validate_timescale(btf_header.timescale);
-                 if (retval == BTF_TRACE_FALSE)
-                 {
-                     fprintf(stdout,"Invalid timescale\n");
-                     fflush(stdout);
-                     exit(EXIT_FAILURE);
-                 }
                  break;
              case 'h' :
                  print_usage();
@@ -336,4 +345,36 @@ void write_btf_trace_header_entity_table(FILE *stream)
             fflush(stream);
         }
     }
+}
+
+/**
+ * Function to write the data section of the BTF
+ *
+ * Arguments:
+ * @in_param stream        : File pointer to the stream where the data has to be
+ *                            written.
+ * @in_param data_buffer   : Data buffer containing the BTF trace information.
+ *
+ * Return: void
+ */
+void write_btf_trace_data(FILE *stream, unsigned int * data_buffer)
+{
+    if (stream == NULL || (data_buffer == NULL))
+    {
+        return;
+    }
+    unsigned int ticks = data_buffer[TIME_FLAG];
+    unsigned char * source_name = get_entity_name(data_buffer[SOURCE_FLAG]);
+    unsigned char * target_name = get_entity_name(data_buffer[TARGET_FLAG]);
+    const unsigned char *event_type_string = event_type[data_buffer[EVENT_TYPE_FLAG]];
+    const unsigned char *event_name_string = event_name[data_buffer[EVENT_FLAG]];
+    unsigned int data = data_buffer[DATA_FLAG];
+
+    if ((source_name != NULL) && (target_name != NULL))
+    {
+        fprintf(stream,"%d, %12s, %6d, %12s, %12s, %6d, %12s, %6d\n", ticks, source_name, data_buffer[SOURCE_INSTANCE_FLAG],
+                 event_type_string, target_name, data_buffer[TARGET_INSTANCE_FLAG], event_name_string, data);
+    }
+
+
 }
