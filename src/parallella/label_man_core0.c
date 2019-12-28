@@ -117,8 +117,11 @@ void cIn10msCore2(int srcId, int srcInstance){
 #else
 void cIn10msCore2(){
 #endif
+#ifdef ENABLE_SHARED_LABEL
 	shared_label_1 = read_DSHM_section(sec1_core_00,0);
 	//shared_label_1 = shared_label_read_core(1,0,0);
+#endif
+
 #ifdef RFTP_GENERATE_BTF_TRACE
     updateBTFTraceBuffer(srcId, srcInstance, RUNNABLE_EVENT, 15,
     		cIn10msCore2Instance, PROCESS_TERMINATE, 0);
@@ -133,7 +136,11 @@ void cIn20msCore2(int srcId, int srcInstance){
 #else
 void cIn20msCore2(){
 #endif
+
+#ifdef ENABLE_SHARED_LABEL
 	shared_label_10 = read_shm_section(sec1_global_pointer,0);
+#endif
+
 #ifdef RFTP_GENERATE_BTF_TRACE
     updateBTFTraceBuffer(srcId, srcInstance, RUNNABLE_EVENT, 18,
     		cIn20msCore2Instance, PROCESS_TERMINATE, 0);
@@ -198,8 +205,11 @@ void cOut10msCore2(int srcId, int srcInstance){
 void cOut10msCore2(){
 #endif
 	shared_label_1++;
+#ifdef ENABLE_SHARED_LABEL
 	write_shm_section(sec1_global_pointer,1,shared_label_1);
 	//shared_label_write(1,shared_label_1);
+#endif
+
 #ifdef RFTP_GENERATE_BTF_TRACE
     updateBTFTraceBuffer(srcId, srcInstance, RUNNABLE_EVENT, 17,
     		cOut10msCore2Instance, PROCESS_TERMINATE, 0);
@@ -215,8 +225,11 @@ void cOut20msCore2(int srcId, int srcInstance){
     void cOut20msCore2(){
 #endif
 
+#ifdef ENABLE_SHARED_LABEL
 	write_shm_section(sec1_global_pointer,3,shared_label_10 + 1);
 	//shared_label_write(3,shared_label_10 + 1);
+#endif
+
 #ifdef RFTP_GENERATE_BTF_TRACE
     updateBTFTraceBuffer(srcId, srcInstance, RUNNABLE_EVENT, 20,
     		cOut20msCore2Instance, PROCESS_TERMINATE, 0);

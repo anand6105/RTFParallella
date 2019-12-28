@@ -205,7 +205,7 @@ int main(int argc, char *argv[])
         //user_config_print_values_auto(SHM_visible_label_count,labelVisual_SHM,shared_label_to_read,prv_val_SHM);
         fprintf(stderr,"\n");
 #endif
-    #ifdef RFTP_GENERATE_BTF_TRACE
+    #ifdef RFTP_GENERATE_BTF_TRACE_
         fprintf(stderr, "BTF trace Core 0---[Ticks=%d][SourceId=%d][SourceIns=%d][Type=%d] \
         		[Target=%d][TargetIns=%d][Event=%d][Data=%d]\n", core0_btf_trace[0],
         		core0_btf_trace[1], core0_btf_trace[2], core0_btf_trace[3], core0_btf_trace[4],

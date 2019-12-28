@@ -372,7 +372,7 @@ void write_btf_trace_data(FILE *stream, unsigned int * data_buffer)
 
     if ((source_name != NULL) && (target_name != NULL))
     {
-        fprintf(stream,"%d, %12s, %6d, %12s, %12s, %6d, %12s, %6d\n", ticks, source_name, data_buffer[SOURCE_INSTANCE_FLAG],
+        fprintf(stream,"%d, %32s, %8d, %8s, %32s, %8d, %16s, %8d\n", ticks, source_name, data_buffer[SOURCE_INSTANCE_FLAG],
                  event_type_string, target_name, data_buffer[TARGET_INSTANCE_FLAG], event_name_string, data);
     }
 
