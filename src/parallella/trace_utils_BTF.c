@@ -96,11 +96,16 @@ static unsigned char * get_entity_name(unsigned int id)
 static void get_trace_timestamp(uint8_t *buffer)
 {
     time_t timer;
+    char date[16] = {0};
+    char time_t[16] = {0};
     struct tm* tm_info;
     time(&timer);
     tm_info = localtime(&timer);
     /* The total number of characters to display time is 26 */
-    strftime((char *)buffer, 26, "%Y-%m-%d %H:%M:%S", tm_info);
+    strftime((char *)date, 16, "%Y-%m-%d", tm_info);
+    strftime((char *)time_t, 16, "%H:%M:%S", tm_info);
+    /* Set the time in ISO 8601 extended specification format */
+    snprintf((char *)buffer, 26, "%s%c%s", date, 'T', time_t);
 }
 
 /* Function to display to usage of the command line parameters */
@@ -159,6 +164,7 @@ void get_btf_trace_file_path(char *trace_file_path)
 void  parse_btf_trace_arguments(int argc, char **argv)
 {
     int opt= 0;
+    int is_time_scale_provided = BTF_TRACE_FALSE;
 
     //Specifying the expected options
     //The two options l and b expect numbers as argument
@@ -186,6 +192,7 @@ void  parse_btf_trace_arguments(int argc, char **argv)
                  break;
              case 's' :
                  strncpy((char *)btf_header.timescale, (const char *)optarg, sizeof(btf_header.timescale));
+                 is_time_scale_provided = BTF_TRACE_TRUE;
                  break;
              case 'h' :
                  print_usage();
@@ -196,6 +203,12 @@ void  parse_btf_trace_arguments(int argc, char **argv)
                  exit(EXIT_FAILURE);
         }
     }
+    /* Set the default time scale as ns */
+    if (is_time_scale_provided == BTF_TRACE_FALSE)
+    {
+        strncpy((char *)btf_header.timescale, (const char *)"ns", sizeof(btf_header.timescale));
+    }
+
 }
 
 
@@ -372,7 +385,7 @@ void write_btf_trace_data(FILE *stream, unsigned int * data_buffer)
 
     if ((source_name != NULL) && (target_name != NULL))
     {
-        fprintf(stream,"%d, %32s, %8d, %8s, %32s, %8d, %16s, %8d\n", ticks, source_name, data_buffer[SOURCE_INSTANCE_FLAG],
+        fprintf(stream,"%d,%s,%d,%s,%s,%d,%s,%d\n", ticks, source_name, data_buffer[SOURCE_INSTANCE_FLAG],
                  event_type_string, target_name, data_buffer[TARGET_INSTANCE_FLAG], event_name_string, data);
     }
 

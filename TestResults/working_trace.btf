@@ -1,0 +1,84 @@
+#version 1.0
+#creator parallella
+#creationdate 2019-06-17T17:49:44
+#inputFile model.txt
+#timescale ns
+#entityType
+#-0 T
+#-2 R
+#-9 SIG
+#entityTable
+#-0 [idle]
+#-1 Task5ms0
+#-2 Task10ms0
+#-3 Task20ms0
+#-4 Task10ms1
+#-5 Task20ms1
+#-6 cIn5ms
+#-7 handler5ms
+#-8 cOut5ms
+#-9 cIn10ms
+#-10 handler10ms
+#-11 cOut10ms
+#-12 cIn20ms
+#-13 handler20ms
+#-14 cOut20ms
+#-15 cIn10msCore2
+#-16 handler10msCore2
+#-17 cOut10msCore2
+#-18 cIn20msCore2
+#-19 handler20msCore2
+#-20 cOut20msCore2
+#-21 sh_label_a
+#-22 sh_label_b
+#-23 DSH_labelA
+#-24 DSH_labelB
+#-25 Core_1
+#-26 Core_2
+#entityTypeTable
+#-T [idle]
+#-T Task5ms0
+#-T Task10ms0
+#-T Task20ms0
+#-T Task10ms1
+#-T Task20ms1
+#-R cIn5ms
+#-R handler5ms
+#-R cOut5ms
+#-R cIn10ms
+#-R handler10ms
+#-R cOut10ms
+#-R cIn20ms
+#-R handler20ms
+#-R cOut20ms
+#-R cIn10msCore2
+#-R handler10msCore2
+#-R cOut10msCore2
+#-R cIn20msCore2
+#-R handler20msCore2
+#-R cOut20msCore2
+#-SIG sh_label_a
+#-SIG sh_label_b
+#-SIG DSH_labelA
+#-SIG DSH_labelB
+#-C Core_1
+#-C Core_2
+0,Task5ms0,0,T,Task5ms0,0,activate
+10,Core_1,0,T,Task5ms0,0,start
+10,Core_1,0,T,Task5ms0,0,running
+11,Task5ms0,0,R,handler5ms,0,start
+12,Task5ms0,0,R,handler5ms,0,terminate
+13,Core_1,0,T,Task5ms0,0,terminate
+13,Core_1,0,T,Task10ms0,0,start
+14,Task10ms0,0,R,handler10ms,0,start
+15,Task10ms0,0,R,handler10ms,0,suspend
+15,Core_1,0,T,Task10ms0,0,preempt
+15,Core_1,0,T,Task20ms0,0,start
+16,Task20ms0,0,R,handler20ms,0,start
+20,Task20ms0,0,R,handler20ms,0,terminate
+22,Core_1,0,T,Task20ms0,0,terminate
+22,Core_1,0,T,Task10ms0,0,start
+22,Task10ms0,0,R,handler10ms,0,start
+26,Task10ms0,0,R,handler10ms,0,terminate
+28,Core_1,0,T,Task10ms0,0,terminate
+
