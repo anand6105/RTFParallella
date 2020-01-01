@@ -15,6 +15,7 @@
 #include "debugFlags.h"
 #include "e-lib.h"
 
+
 typedef unsigned int e_label_size; // one word = 4 bytes = unsigned int
 
 unsigned int *outbuf_shared[SHM_DEFINED_SPACE]; //array for global section access API
@@ -110,7 +111,6 @@ uint8_t shared_label_write(int label_indx,int payload){
 unsigned int shared_label_read(int label_indx){
 	return *outbuf_shared[label_indx];
 }
-
 
 
 //-------------------end of file-------------------------//

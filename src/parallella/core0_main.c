@@ -26,7 +26,7 @@
 #include "task.h"
 #include "queue.h"
 //utility imports
-unsigned int* global_shm_sec_ptr;
+//unsigned int* global_shm_sec_ptr;
 
 //---------------------------------------------
 int main(void) {

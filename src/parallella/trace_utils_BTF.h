@@ -36,7 +36,7 @@
 #define EVENT_FLAG                      6
 #define DATA_FLAG                       7
 
-
+/* Enum for event type ID */
 typedef enum btf_trace_event_type_t
 {
     TASK_EVENT,
@@ -53,10 +53,15 @@ typedef enum btf_trace_event_type_t
     SIMULATION_EVENT
 } btf_trace_event_type;
 
+/* Enum for event name */
 typedef enum btf_trace_event_name_t
 {
+    INIT = -1,
     PROCESS_START,
     PROCESS_TERMINATE,
+    PROCESS_PREEMPT,
+    PROCESS_SUSPEND,
+    PROCESS_RESUME,
     SIGNAL_READ,
     SIGNAL_WRITE
 } btf_trace_event_name;
@@ -76,10 +81,27 @@ typedef struct btf_trace_header_config_t
 typedef struct btf_trace_entity_entry_t
 {
     uint16_t entity_id;                 /* Entity ID to get the entity name */
+    int16_t instance;                   /* Current instance of the entity */
+    btf_trace_event_name state;         /* Current state of the entity */
     btf_trace_event_type entity_type;   /* Entity type to get the source*/
     uint8_t entity_name[64];            /* Entity name */
+
 } btf_trace_entity_entry;
 
+/* Structure to hold BTF trace data in task stack fro processing */
+typedef struct btf_trace_data_t
+{
+    int32_t ticks;                     /* Not used currently */
+    int32_t srcId;                     /* Source Id */
+    int32_t srcInstance;               /* Instance of the source */
+    int32_t eventTypeId;               /* Type of event Runnable , Task etc.. */
+    int32_t taskId;                    /* Task Id */
+    int32_t taskInstance;              /* Instance of the task */
+    int32_t eventState;                /* State of the event */
+    int32_t data;                      /* Notes */
+} btf_trace_data;
+
+/* Entity table structure */
 typedef struct btf_trace_entity_table_t
 {
     uint16_t is_occupied;                 /* If 0, entry is available else not available */
@@ -108,6 +130,6 @@ void write_btf_trace_header_entity_type_table(FILE *stream);
 void store_entity_entry(uint16_t typeId, btf_trace_event_type type, uint8_t *name);
 
 /* Function to write the data section of the BTF */
-void write_btf_trace_data(FILE *stream, unsigned int * data_buffer);
+void write_btf_trace_data(FILE *stream, uint8_t core_id, unsigned int * data_buffer);
 
 #endif /* SRC_PARALLELLA_TRACE_UTILS_BTF_H_ */

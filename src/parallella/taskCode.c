@@ -35,13 +35,13 @@ void handler5ms(){
     int localLabel;
     updateDebugFlag(700);
 #ifdef RFTP_GENERATE_BTF_TRACE
-    updateBTFTraceBuffer(1, 0, RUNNABLE_EVENT, 7,
-    		passes1, PROCESS_START, 0);
+    traceTaskEvent(srcId, srcInstance, RUNNABLE_EVENT, 7,
+            passes1, PROCESS_START, 0);
 #endif
     sleepTimerMs(2,1);
 #ifdef RFTP_GENERATE_BTF_TRACE
-    updateBTFTraceBuffer(srcId, srcInstance, RUNNABLE_EVENT, 7,
-    		passes1, PROCESS_TERMINATE, 0);
+    traceTaskEvent(srcId, srcInstance, RUNNABLE_EVENT, 7,
+            passes1, PROCESS_TERMINATE, 0);
 #endif
     passes1++;
     traceTaskPasses(1,passes1);
@@ -56,12 +56,12 @@ void handler10ms(){
 #endif
 	updateDebugFlag(800);
 #ifdef RFTP_GENERATE_BTF_TRACE
-    updateBTFTraceBuffer(2, 0, RUNNABLE_EVENT, 10,
+    traceTaskEvent(srcId, srcInstance, RUNNABLE_EVENT, 10,
     		passes2, PROCESS_START, 0);
 #endif
     sleepTimerMs(3,2);
 #ifdef RFTP_GENERATE_BTF_TRACE
-    updateBTFTraceBuffer(srcId, srcInstance, RUNNABLE_EVENT, 10,
+    traceTaskEvent(srcId, srcInstance, RUNNABLE_EVENT, 10,
     		passes2, PROCESS_TERMINATE, 0);
 #endif
     passes2++;
@@ -76,12 +76,12 @@ void handler20ms(){
 #endif
 	updateDebugFlag(899);
 #ifdef RFTP_GENERATE_BTF_TRACE
-    updateBTFTraceBuffer(3, 0, RUNNABLE_EVENT, 13,
+    traceTaskEvent(srcId, srcInstance, RUNNABLE_EVENT, 13,
     		passes3, PROCESS_START, 0);
 #endif
     sleepTimerMs(5,3);
 #ifdef RFTP_GENERATE_BTF_TRACE
-    updateBTFTraceBuffer(srcId, srcInstance, RUNNABLE_EVENT, 13,
+    traceTaskEvent(srcId, srcInstance, RUNNABLE_EVENT, 13,
     		passes3, PROCESS_TERMINATE, 0);
 #endif
     passes3++;
@@ -98,12 +98,12 @@ void handler10msCore2(){
 #endif
     updateDebugFlag(899);
 #ifdef RFTP_GENERATE_BTF_TRACE
-    updateBTFTraceBuffer(srcId, srcInstance, RUNNABLE_EVENT, 16,
+    traceTaskEvent(srcId, srcInstance, RUNNABLE_EVENT, 16,
     		passes4, PROCESS_START, 0);
 #endif
     sleepTimerMs(3,4);
 #ifdef RFTP_GENERATE_BTF_TRACE
-    updateBTFTraceBuffer(srcId, srcInstance, RUNNABLE_EVENT, 16,
+    traceTaskEvent(srcId, srcInstance, RUNNABLE_EVENT, 16,
     		passes4, PROCESS_TERMINATE, 0);
 #endif
     passes4++;
@@ -120,12 +120,12 @@ void handler20msCore2(){
 #endif
     updateDebugFlag(899);
 #ifdef RFTP_GENERATE_BTF_TRACE
-    updateBTFTraceBuffer(srcId, srcInstance, RUNNABLE_EVENT, 19,
+    traceTaskEvent(srcId, srcInstance, RUNNABLE_EVENT, 19,
     		passes5, PROCESS_START, 0);
 #endif
     sleepTimerMs(7,5);
 #ifdef RFTP_GENERATE_BTF_TRACE
-    updateBTFTraceBuffer(srcId, srcInstance, RUNNABLE_EVENT, 19,
+    traceTaskEvent(srcId, srcInstance, RUNNABLE_EVENT, 19,
     		passes5, PROCESS_TERMINATE, 0);
 #endif
     passes5++;

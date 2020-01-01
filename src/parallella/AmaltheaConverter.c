@@ -82,12 +82,12 @@ void generalizedRTOSTask(AmaltheaTask task){
     for (;;){
         //execute cIn
 #ifdef RFTP_GENERATE_BTF_TRACE
-        updateBTFTraceBuffer(task.srcId, task.srcInstance, TASK_EVENT, task.taskId,
+        traceTaskEvent(task.srcId, task.srcInstance, TASK_EVENT, task.taskId,
                                 task.taskInstance, PROCESS_START, 0);
         task.cInHandler(task.taskId, task.taskInstance);
         task.taskHandler(task.taskId, task.taskInstance);
         task.cOutHandler(task.taskId, task.taskInstance);
-        updateBTFTraceBuffer(task.srcId, task.srcInstance, TASK_EVENT, task.taskId,
+        traceTaskEvent(task.srcId, task.srcInstance, TASK_EVENT, task.taskId,
                                 task.taskInstance, PROCESS_TERMINATE, 0);
         vTaskDelayUntil( &xLastWakeTime, task.period);
         task.taskInstance++;

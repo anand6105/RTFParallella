@@ -14,6 +14,7 @@
 #include "c2c.h"
 
 #include "e-lib.h"
+#ifdef ENABLE_SHARED_LABEL
 
 dstr_mem_sec_1_label_type *outbuf_dstr_shared[10];
 //e_mem_t emem_dst[16];
@@ -130,3 +131,4 @@ unsigned int get_base_address_core(int row, int col){
 		}
 	}
 }
+#endif

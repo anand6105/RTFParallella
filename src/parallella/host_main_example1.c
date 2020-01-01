@@ -142,8 +142,8 @@ int main(int argc, char *argv[])
     e_open(&dev,0,0,2,1); //2 rows one column rectangle size 2*1
     //reset the group
     e_reset_group(&dev);
-    e_return_stat_t result1;
-    e_return_stat_t result2;
+    e_return_stat_t result1 = E_OK;
+    e_return_stat_t result2 = E_OK;
     //load the group
     result1 =  e_load("core0_main.elf",&dev,0,0,E_FALSE);
     result2 =  e_load("core1_main.elf",&dev,1,0,E_FALSE);
@@ -174,16 +174,32 @@ int main(int argc, char *argv[])
         e_read(&dev,0,0,addr, &message, sizeof(message));
 #endif
 #ifdef RFTP_GENERATE_BTF_TRACE
-        e_read(&dev,0,0,btf_trace_addr, core0_btf_trace, sizeof(core0_btf_trace));
-        write_btf_trace_data(fp_to_trace, core0_btf_trace);
+        e_read(&dev,0,0,0x4000, core0_btf_trace, sizeof(core0_btf_trace));
+        write_btf_trace_data(fp_to_trace, 0, core0_btf_trace);
+        e_read(&dev,0,0,0x4060, core0_btf_trace, sizeof(core0_btf_trace));
+        write_btf_trace_data(fp_to_trace, 0, core0_btf_trace);
+        e_read(&dev,0,0,0x4020, core0_btf_trace, sizeof(core0_btf_trace));
+        write_btf_trace_data(fp_to_trace, 0, core0_btf_trace);
+        e_read(&dev,0,0,0x4080, core0_btf_trace, sizeof(core0_btf_trace));
+        write_btf_trace_data(fp_to_trace, 0, core0_btf_trace);
+        e_read(&dev,0,0,0x4040, core0_btf_trace, sizeof(core0_btf_trace));
+        write_btf_trace_data(fp_to_trace, 0, core0_btf_trace);
+        e_read(&dev,0,0,0x40A0, core0_btf_trace, sizeof(core0_btf_trace));
+        write_btf_trace_data(fp_to_trace, 0, core0_btf_trace);
 #endif
 #ifdef ENABLE_SHARED_LABEL
         e_read(&dev,0,0,dstr_mem_offset_sec_1, &shared_label_core[0], sizeof(shared_label_core_00));
         e_read(&dev,1,0,addr, &message2, sizeof(message2));
 #endif
 #ifdef RFTP_GENERATE_BTF_TRACE
-        e_read(&dev,1,0,btf_trace_addr, core1_btf_trace, sizeof(core1_btf_trace));
-        write_btf_trace_data(fp_to_trace, core1_btf_trace);
+        e_read(&dev,1,0,0x4000, core1_btf_trace, sizeof(core1_btf_trace));
+        write_btf_trace_data(fp_to_trace, 1, core1_btf_trace);
+        e_read(&dev,1,0,0x4040, core1_btf_trace, sizeof(core1_btf_trace));
+        write_btf_trace_data(fp_to_trace, 1, core1_btf_trace);
+        e_read(&dev,1,0,0x4020, core1_btf_trace, sizeof(core1_btf_trace));
+        write_btf_trace_data(fp_to_trace, 1, core1_btf_trace);
+        e_read(&dev,1,0,0x4060, core1_btf_trace, sizeof(core1_btf_trace));
+        write_btf_trace_data(fp_to_trace, 1, core1_btf_trace);
 #endif
 #ifdef ENABLE_SHARED_LABEL
         e_read(&dev,1,0,dstr_mem_offset_sec_1, &shared_label_core[1], sizeof(shared_label_core_10));

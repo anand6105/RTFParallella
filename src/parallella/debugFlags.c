@@ -21,30 +21,23 @@ unsigned int *outbuf[10];
 #endif
 
 #ifdef RFTP_GENERATE_BTF_TRACE
-#if 0
-unsigned int *ptick_count = (void *)0x4000;
-unsigned int *psource_id = (void *)0x4004;
-unsigned int *psource_instance = (void *)0x4008;
-unsigned int *ptype_id = (void *)0x400C;
-unsigned int *ptarget_id = (void *)0x4010;
-unsigned int *ptarget_instance = (void *)0x4014;
-unsigned int *pevent_id = (void *)0x4018;
-unsigned int *psig_data = (void *)0x4020;
-
-static unsigned int source_id;
-static unsigned int source_instance;
-static unsigned int target_id;
-static unsigned int target_instance;
-static unsigned int event_id;
-static unsigned int type_id;
-static unsigned int sig_data;
-
-#endif
-
-unsigned int *btf_trace_buf[BTF_TRACE_BUFFER_SIZE];
 
 
+static unsigned int *btf_trace_buf[1];
 
+static const task_section task_section_list[] = { {.taskId = 1, .base_address = 0x4000 },
+                                     {.taskId = 2, .base_address = 0x4020 },
+                                     {.taskId = 3, .base_address = 0x4040 },
+                                     {.taskId = 4, .base_address = 0x4000 },
+                                     {.taskId = 5, .base_address = 0x4020 },
+                                     {.taskId = 7, .base_address = 0x4060 },
+                                     {.taskId = 10, .base_address = 0x4080 },
+                                     {.taskId = 13, .base_address = 0x40A0 },
+                                     {.taskId = 16, .base_address = 0x4040 },
+                                     {.taskId = 19, .base_address = 0x4060 }};
+
+
+static unsigned int get_task_base_address(unsigned int taskId);
 #endif
 
 
@@ -76,6 +69,20 @@ void outbuf_init(void ){
 
 
 #ifdef RFTP_GENERATE_BTF_TRACE
+
+static unsigned int get_task_base_address(unsigned int taskId)
+{
+    unsigned int index;
+    unsigned int entries = sizeof(task_section_list) /sizeof(task_section_list[0]);
+    for(index = 1; index <= entries; index++)
+    {
+        if (taskId == task_section_list[index - 1].taskId)
+        {
+            return task_section_list[index - 1].base_address;
+        }
+    }
+    return 0x00;
+}
 /**
  * Function to initialize the BTF trace buffer.
  *
@@ -88,17 +95,9 @@ void btf_trace_buf_init(void)
 {
     int index;
     btf_trace_buf[0] = (unsigned int *) btf_trace_address;
-    btf_trace_buf[1] = btf_trace_buf[0] + 1;
-    btf_trace_buf[2] = btf_trace_buf[1] + 1;
-    btf_trace_buf[3] = btf_trace_buf[2] + 1;
-    btf_trace_buf[4] = btf_trace_buf[3] + 1;
-    btf_trace_buf[5] = btf_trace_buf[4] + 1;
-    btf_trace_buf[6] = btf_trace_buf[5] + 1;
-    btf_trace_buf[7] = btf_trace_buf[6] + 1;
     //initialize buffer
-    for (index = 0;index < BTF_TRACE_BUFFER_SIZE; index++){
-        *btf_trace_buf[index] = 0x00;
-    }
+    *btf_trace_buf[TIME_FLAG] = 0x00;
+    
 }
 
 #endif
@@ -137,27 +136,31 @@ void updateDebugFlag(int debugMessage){
 }
 
 #ifdef RFTP_GENERATE_BTF_TRACE
-void updateBTFTraceBuffer(int srcID, int srcInstance, btf_trace_event_type type,
-        int targetId, int targetInstance, btf_trace_event_name event_name, int data)
+
+
+void traceTaskEvent(int srcID, int srcInstance, btf_trace_event_type type,
+        int taskId, int taskInstance, btf_trace_event_name event_name, int data)
 {
-#if 1
-    //*btf_trace_buf[TIME_FLAG] = xTaskGetTickCount();
-    *btf_trace_buf[SOURCE_FLAG] = srcID;
-    *btf_trace_buf[SOURCE_INSTANCE_FLAG] = srcInstance;
-    *btf_trace_buf[EVENT_TYPE_FLAG] = type;
-    *btf_trace_buf[TARGET_FLAG] = targetId;
-    *btf_trace_buf[TARGET_INSTANCE_FLAG] = targetInstance;
-    *btf_trace_buf[EVENT_FLAG] = event_name;
-    *btf_trace_buf[DATA_FLAG] = data;
-#else
-    source_id = srcID;
-    source_instance = srcInstance;
-    type_id = type;
-    target_id = targetId;
-    target_instance = targetInstance;
-    event_id = event_name;
-    sig_data = data;
-#endif
+    unsigned int base_address = get_task_base_address(taskId);
+    if (base_address != 0x00)
+    {
+        unsigned int *address = base_address;
+        *address = *btf_trace_buf[TIME_FLAG];
+        address++;
+        *address = srcID;
+        address++;
+        *address = srcInstance;
+        address++;
+        *address = type;
+        address++;
+        *address = taskId;
+        address++;
+        *address = taskInstance;
+        address++;
+        *address = event_name;
+        address++;
+        *address = data;
+    }
 }
 
 

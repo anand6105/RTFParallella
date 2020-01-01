@@ -78,8 +78,8 @@ const uint8_t runnable_enum[][runnable_str_len] =
 };
 
 const uint8_t hw_enum[][hw_str_len] = {
-    "Core_1",
-    "Core_2"
+    "Core_0",
+    "Core_1"
 };
 
 //#endif /* End of RFTP_GENERATE_BTF_TRACE */

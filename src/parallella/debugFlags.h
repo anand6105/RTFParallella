@@ -18,7 +18,7 @@
 
 #define cnt_address     0x3000
 //#ifdef RFTP_GENERATE_BTF_TRACE
-    #define btf_trace_address    0x3200
+    #define btf_trace_address    0x3000
 //#endif
 
 #define TASK1_FLAG             2
@@ -78,8 +78,15 @@ void updateTick(void);
 void updateDebugFlag(int debugMessage);
 
 #ifdef RFTP_GENERATE_BTF_TRACE
-void updateBTFTraceBuffer(int srcID, int srcInstance, btf_trace_event_type type,
-        int targetId, int targetInstance, btf_trace_event_name event_name, int data);
+
+typedef struct task_section_t
+{
+    unsigned int taskId;
+    unsigned int base_address;
+}task_section;
+
+void traceTaskEvent(int srcID, int srcInstance, btf_trace_event_type type,
+        int taskId, int taskInstance, btf_trace_event_name event_name, int data);
 
 void write_to_btf_trace(void);
 
